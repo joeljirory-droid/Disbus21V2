@@ -2190,6 +2190,16 @@ function renderResumen() {
     <button onclick="abrirResumenPlus()" style="width:100%;margin-top:16px;padding:15px;background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(59,130,246,0.15));border:1.5px solid rgba(139,92,246,0.45);border-radius:14px;color:var(--text);font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;letter-spacing:0.01em;">
       <span style="font-size:18px;">📊</span> Ver Resumen+ anual
     </button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+      <button onclick="exportarDatos()" style="padding:13px 8px;background:rgba(16,185,129,0.08);border:1.5px solid rgba(16,185,129,0.35);border-radius:12px;color:var(--green);font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;">
+        📤 Exportar
+      </button>
+      <button onclick="document.getElementById('importInput').click()" style="padding:13px 8px;background:rgba(59,130,246,0.08);border:1.5px solid rgba(59,130,246,0.35);border-radius:12px;color:var(--blue);font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;">
+        📥 Importar
+      </button>
+    </div>
+    <input type="file" id="importInput" accept=".json" style="display:none;" onchange="importarDatos(event)">
+    <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.5;">Exporta antes de actualizar la app para no perder tus datos</div>
   `;
 }
 function rr(l,v){return `<div class="res-row"><span class="rl">${l}</span><span class="rv">+${v.toFixed(2)}€</span></div>`;}
@@ -2487,6 +2497,60 @@ function cerrarResumenPlus(e) {
   if (!e || e.target === document.getElementById('resumenPlusOverlay')) {
     document.getElementById('resumenPlusOverlay').classList.remove('show');
   }
+}
+
+// ===== EXPORTAR / IMPORTAR DATOS =====
+function exportarDatos() {
+  const payload = {
+    version: 2,
+    exportado: new Date().toISOString(),
+    dias: dias,
+    config: config
+  };
+  const json = JSON.stringify(payload, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const fecha = new Date().toISOString().slice(0,10);
+  a.href     = url;
+  a.download = `disbus21_backup_${fecha}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✅ Datos exportados correctamente');
+}
+
+function importarDatos(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      // Soporte tanto backup nuevo (con wrapper) como array directo
+      const diasImport  = Array.isArray(data) ? data : (data.dias || []);
+      const configImport = data.config || null;
+      if (!Array.isArray(diasImport)) throw new Error('Formato no válido');
+      if (!confirm(`¿Importar ${diasImport.length} días registrados?\nEsto reemplazará los datos actuales.`)) {
+        event.target.value = '';
+        return;
+      }
+      dias = diasImport;
+      if (configImport) {
+        config = configImport;
+        localStorage.setItem('disbus_cfg', JSON.stringify(config));
+      }
+      guardarLS();
+      renderCal();
+      renderResumen();
+      renderVacancesCounter();
+      updateHeader();
+      showToast(`✅ ${diasImport.length} días importados`);
+    } catch(err) {
+      alert('❌ Error al leer el archivo. Asegúrate de que es un backup de Disbus 21.');
+    }
+    event.target.value = '';
+  };
+  reader.readAsText(file);
 }
 
 function guardarLS(){localStorage.setItem('disbus_v2',JSON.stringify(dias));}
