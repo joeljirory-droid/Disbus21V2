@@ -1631,6 +1631,10 @@ function renderCal() {
   const trab = df.filter(d => d.tipo!=='descanso');
   const extras = trab.reduce((s,d) => s+(d.total||0), 0);
   const horas = trab.reduce((s,d) => s+(d.totalH||0), 0);
+  const mesesC = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const lbl = calPeriodo === 'mes'
+    ? `${MESES[calMes]} ${calYear}`
+    : `16 ${mesesC[calMes]} – 15 ${mesesC[(calMes+1)%12]} ${calMes===11?calYear+1:calYear}`;
 
   document.getElementById('calFooter').innerHTML = `
     <div class="cf-stat">
@@ -1643,7 +1647,7 @@ function renderCal() {
     </div>
     <div class="cf-stat">
       <div class="val" style="color:var(--green)">+${extras.toFixed(2)}€</div>
-      <div class="lbl">Extras período</div>
+      <div class="lbl" style="font-size:9px;">${lbl}</div>
     </div>
   `;
 }
@@ -1655,10 +1659,9 @@ function getDiasPeriodo() {
       return f.getMonth()===calMes && f.getFullYear()===calYear;
     });
   }
-  // Período 16→15: si estamos en la segunda quincena (día >= 16), el período activo
-  // empieza el 16 del mes visualizado y acaba el 15 del siguiente
-  const desde = new Date(calYear, calMes - 1, 16);
-  const hasta  = new Date(calYear, calMes, 15);
+  // Período 16→15: siempre del 16 del mes visualizado al 15 del siguiente
+  const desde = new Date(calYear, calMes, 16);
+  const hasta  = new Date(calYear, calMes + 1, 15);
   return dias.filter(d => {
     const f = new Date(d.fecha+'T12:00:00');
     return f >= desde && f <= hasta;
