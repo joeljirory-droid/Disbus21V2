@@ -732,6 +732,29 @@ input:focus, select:focus {
 .emp-ruta-btn:active { background: rgba(59,130,246,0.2); }
 .emp-has-rutas { border-color: rgba(59,130,246,0.3); }
 
+/* ── INFORME PERÍODO ── */
+.inf-header { background: linear-gradient(135deg,rgba(245,158,11,0.15),rgba(16,185,129,0.08)); border:1.5px solid rgba(245,158,11,0.3); border-radius:14px; padding:16px; text-align:center; margin-bottom:14px; }
+.inf-header-title { font-size:11px; font-family:var(--mono); text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin-bottom:4px; }
+.inf-header-period { font-size:15px; font-weight:800; color:var(--accent); margin-bottom:2px; }
+.inf-header-sub { font-size:10px; color:var(--muted); }
+.inf-grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:7px; margin-bottom:12px; }
+.inf-kpi { background:var(--surface2); border:1px solid var(--border); border-radius:11px; padding:10px 8px; text-align:center; }
+.inf-kpi-lbl { font-size:9px; font-family:var(--mono); text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); margin-bottom:3px; }
+.inf-kpi-val { font-size:16px; font-weight:800; font-family:var(--mono); line-height:1; }
+.inf-section-title { font-size:10px; font-family:var(--mono); text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin:14px 0 8px; display:flex; align-items:center; gap:6px; }
+.inf-section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+.inf-day { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; margin-bottom:6px; }
+.inf-day-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.inf-day-fecha { font-size:12px; font-weight:700; color:var(--text); }
+.inf-day-total { font-size:13px; font-weight:800; font-family:var(--mono); color:var(--accent); }
+.inf-day-meta { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:5px; }
+.inf-day-tag { font-size:10px; font-family:var(--mono); background:var(--surface3); border:1px solid var(--border); border-radius:5px; padding:2px 7px; color:var(--muted2); }
+.inf-day-pluses { display:flex; flex-wrap:wrap; gap:4px; }
+.inf-plus-chip { font-size:10px; font-family:var(--mono); border-radius:5px; padding:2px 7px; border:1px solid; }
+.inf-neto-card { background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(16,185,129,0.06)); border:2px solid rgba(59,130,246,0.3); border-radius:14px; padding:16px; text-align:center; margin:12px 0; }
+.inf-plus-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid var(--border); }
+.inf-plus-row:last-child { border-bottom:none; }
+.inf-capture-hint { text-align:center; padding:14px; color:var(--muted); font-size:11px; border-top:1px dashed var(--border); margin-top:12px; }
 /* ── RESUMEN+ ── */
 .rp-section { margin-bottom: 18px; }
 .rp-title {
@@ -947,7 +970,8 @@ function checkPwd() {
         <div style="font-size:12px;color:var(--text);line-height:1.8;margin-bottom:12px;">
           · <span style="color:var(--green)">+15,28€ Comida</span> → entras <strong>antes</strong> de las 12:00 y sales <strong>después</strong> de las 14:00, sin parón de 1h o más en base<br>
           · <span style="color:var(--green)">+15,28€ Cena</span> → entras <strong>antes</strong> de las 20:00 y sales <strong>después</strong> de las 22:00, sin parón de 1h o más en base<br>
-          · <span style="color:var(--green)">+28,55€ Dieta fuera de España</span> → servicio internacional con dieta (manual)
+          · <span style="color:var(--green)">+28,55€ Dieta fuera de España</span> → servicio internacional con dieta (manual)<br>
+          · <span style="color:var(--green)">+57,10€ 2× Dieta fuera de España</span> → dos servicios internacionales con dieta (manual)
         </div>
 
         <div style="font-size:11px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">🌙 Nocturno</div>
@@ -960,6 +984,7 @@ function checkPwd() {
           · <span style="color:var(--accent)">+10,00€ Limpieza/planif.</span> → entra <strong>siempre</strong> en días trabajados (automático)<br>
           · <span style="color:var(--red)">+125,00€ Festivo nacional</span> → día festivo nacional trabajado (manual)<br>
           · <span style="color:var(--blue)">+10,00€ En equipo</span> → conducción en equipo (manual)<br>
+          · <span style="color:var(--accent)">+92,00€ Exceso de jornada</span> → día trabajado por encima de la jornada del período (manual)<br>
           · <span style="color:var(--blue)">+70,00€ Circuito nacional</span> → selecciona "Circuito nacional" en tipo<br>
           · <span style="color:var(--blue)">+95,00€ Circuito internacional</span> → selecciona "Circuito internacional" en tipo
         </div>
@@ -1030,7 +1055,13 @@ function checkPwd() {
               <span class="check-icon">👥</span>En equipo<br><small style="color:var(--muted);font-size:9px;">+10€</small>
             </div>
             <div class="check-item" id="chk-pernocta" onclick="toggleChk('pernocta')">
-              <span class="check-icon">🌍</span>Dieta fuera<br><small style="color:var(--muted);font-size:9px;">+28,55€</small>
+              <span class="check-icon">🌍</span>Dieta fuera<br><small style="color:var(--muted);font-size:9px;">1×28,55€</small>
+            </div>
+            <div class="check-item" id="chk-pernocta2" onclick="toggleChk('pernocta2')">
+              <span class="check-icon">🌍🌍</span>2 Dietas fuera<br><small style="color:var(--muted);font-size:9px;">2×28,55€</small>
+            </div>
+            <div class="check-item" id="chk-exceso" onclick="toggleChk('exceso')">
+              <span class="check-icon">➕</span>Exceso jornada<br><small style="color:var(--muted);font-size:9px;">+92€</small>
             </div>
           </div>
         </div>
@@ -1203,6 +1234,21 @@ function checkPwd() {
                 <span style="color:var(--muted);font-size:13px;">€</span>
               </div>
             </div>
+            <!-- ANTIGÜEDAD -->
+            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:4px;">
+              <div style="font-size:12px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">🏅 Antigüedad (2025)</div>
+              <select id="antiguedad" onchange="guardarConfig()" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--sans);font-size:13px;padding:8px 10px;outline:none;">
+                <option value="0">Sin antigüedad — 0,00€</option>
+                <option value="32.61">1 Bienio — 32,61€</option>
+                <option value="65.22">2 Bienios — 65,22€</option>
+                <option value="130.46">2 Bienios + 1 Quinquenio — 130,46€</option>
+                <option value="195.67">2 Bienios + 2 Quinquenios — 195,67€</option>
+                <option value="260.89">2 Bienios + 3 Quinquenios — 260,89€</option>
+                <option value="326.11">2 Bienios + 4 Quinquenios — 326,11€</option>
+                <option value="391.33">2 Bienios + 5 Quinquenios — 391,33€</option>
+              </select>
+              <div style="font-size:10px;color:var(--muted);margin-top:7px;">Se suma a los conceptos fijos cada mes</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1252,6 +1298,24 @@ function checkPwd() {
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- MODAL INFORME PERÍODO -->
+<div class="modal-overlay" id="informeOverlay" onclick="cerrarInforme(event)">
+  <div class="modal" style="max-height:92vh;" id="informeModal">
+    <div class="modal-header" style="flex-direction:column;gap:10px;align-items:stretch;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="modal-title">🧾 Informe del período</div>
+        <button class="modal-close" onclick="cerrarInforme()">✕</button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+        <button onclick="informeNavegar(-1)" id="informeBtnPrev" style="background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:8px;transition:background 0.15s;" onmouseenter="this.style.background='var(--surface3)'" onmouseleave="this.style.background='none'">‹</button>
+        <div id="informePeriodoLabel" style="font-size:12px;font-family:var(--mono);font-weight:700;color:var(--accent);text-align:center;flex:1;"></div>
+        <button onclick="informeNavegar(1)" id="informeBtnNext" style="background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:8px;transition:background 0.15s;" onmouseenter="this.style.background='var(--surface3)'" onmouseleave="this.style.background='none'">›</button>
+      </div>
+    </div>
+    <div id="informeContent"></div>
   </div>
 </div>
 
@@ -1330,7 +1394,7 @@ const FESTIVOS_NAC = new Set([
 
 let dias = JSON.parse(localStorage.getItem('disbus_v2') || '[]');
 let _editando = false;
-let config = JSON.parse(localStorage.getItem('disbus_cfg') || '{"seq":0,"mostrarLibres":true,"pctComunes":4.83,"pctAccidente":1.65,"pctIRPF":16.76,"poliza":0.69}');
+let config = JSON.parse(localStorage.getItem('disbus_cfg') || '{"seq":0,"mostrarLibres":true,"pctComunes":4.83,"pctAccidente":1.65,"pctIRPF":16.76,"poliza":0.69,"antiguedad":0}');
 let calMes = new Date().getMonth();
 let calYear = new Date().getFullYear();
 let calPeriodo = 'mes';
@@ -1356,6 +1420,7 @@ function guardarConfig() {
   config.pctAccidente = parseFloat(document.getElementById('pctAccidente').value) || 1.65;
   config.pctIRPF      = parseFloat(document.getElementById('pctIRPF').value)      || 16.76;
   config.poliza       = parseFloat(document.getElementById('poliza').value)        || 0.69;
+  config.antiguedad   = parseFloat(document.getElementById('antiguedad').value)    || 0;
   localStorage.setItem('disbus_cfg', JSON.stringify(config));
   renderCal();
   renderProximosLibres();
@@ -1443,6 +1508,7 @@ function cargarPcts() {
   document.getElementById('pctAccidente').value = config.pctAccidente ?? 1.65;
   document.getElementById('pctIRPF').value      = config.pctIRPF      ?? 16.76;
   document.getElementById('poliza').value       = config.poliza        ?? 0.69;
+  document.getElementById('antiguedad').value   = config.antiguedad    ?? 0;
 }
 
 function showPanel(id) {
@@ -1589,8 +1655,10 @@ function getDiasPeriodo() {
       return f.getMonth()===calMes && f.getFullYear()===calYear;
     });
   }
-  const desde = calMes > 0 ? new Date(calYear, calMes-1, 16) : new Date(calYear-1, 11, 16);
-  const hasta = new Date(calYear, calMes, 15);
+  // Período 16→15: si estamos en la segunda quincena (día >= 16), el período activo
+  // empieza el 16 del mes visualizado y acaba el 15 del siguiente
+  const desde = new Date(calYear, calMes - 1, 16);
+  const hasta  = new Date(calYear, calMes, 15);
   return dias.filter(d => {
     const f = new Date(d.fecha+'T12:00:00');
     return f >= desde && f <= hasta;
@@ -1857,6 +1925,14 @@ function renderVacancesCounter() {
 function toggleChk(id) {
   checks[id] = !checks[id];
   document.getElementById('chk-'+id).classList.toggle('on', checks[id]);
+  // Exclusión mutua dietas fuera
+  if (id === 'pernocta' && checks.pernocta) {
+    checks.pernocta2 = false;
+    document.getElementById('chk-pernocta2').classList.remove('on');
+  } else if (id === 'pernocta2' && checks.pernocta2) {
+    checks.pernocta = false;
+    document.getElementById('chk-pernocta').classList.remove('on');
+  }
   calcular();
 }
 
@@ -1933,9 +2009,11 @@ function calcDia(inicio, fin, tipo, chks, paron) {
   if (tocaNocturno) add('Plus nocturno 01-04h', 40, 'nocturno');
   else if (chks.nocturno) add('Plus nocturno 01-04h', 40, 'nocturno'); // manual si no se detecta automático
 
-  if (chks.festivo)  add('Festivo nacional', 125, 'festivo');
-  if (chks.equipo)   add('Conducción en equipo', 10, 'horas');
-  if (chks.pernocta) add('Dieta fuera de España', 28.55, 'dieta');
+  if (chks.festivo)   add('Festivo nacional', 125, 'festivo');
+  if (chks.equipo)    add('Conducción en equipo', 10, 'horas');
+  if (chks.exceso)    add('Exceso de jornada', 92, 'horas');
+  if (chks.pernocta2) add('2× Dieta fuera de España', 57.10, 'dieta');
+  else if (chks.pernocta) add('Dieta fuera de España', 28.55, 'dieta');
 
   return { totalH, horasStr, pluses, total };
 }
@@ -2016,19 +2094,18 @@ function guardar() {
 }
 
 function renderResumen() {
-  // Período de pluses: del 16 del mes anterior al 15 del mes actual
+  // Período activo: si hoy >= 16, el período es 16 mes_actual → 15 mes_siguiente
   const hoy = new Date();
   const anioActual = hoy.getFullYear();
-  const mesActual  = hoy.getMonth(); // 0-based
+  const diaActual  = hoy.getDate();
+  const mesBase    = diaActual >= 16 ? hoy.getMonth() : hoy.getMonth() - 1;
 
-  // Inicio período: 16 del mes anterior
-  const inicioPer = new Date(anioActual, mesActual - 1, 16);
-  // Fin período: 15 del mes actual (incluido)
-  const finPer    = new Date(anioActual, mesActual, 15);
+  const inicioPer = new Date(anioActual, mesBase, 16);
+  const finPer    = new Date(anioActual, mesBase + 1, 15);
 
   // Etiqueta legible del período
   const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  const labelPer = `16 ${meses[mesActual-1>=0?mesActual-1:11]} – 15 ${meses[mesActual]} ${anioActual}`;
+  const labelPer = `16 ${meses[inicioPer.getMonth()]} – 15 ${meses[finPer.getMonth()]} ${finPer.getFullYear()}`;
 
   // Filtrar días trabajados dentro del período de pluses
   const enPer = dias.filter(d => {
@@ -2090,7 +2167,8 @@ function renderResumen() {
       </div>`;
   }
 
-  const bruto = TOTAL_FIJO + extras;
+  const antig = config.antiguedad ?? 0;
+  const bruto = TOTAL_FIJO + antig + extras;
   const pctC  = config.pctComunes   ?? 4.83;
   const pctA  = config.pctAccidente ?? 1.65;
   const pctI  = config.pctIRPF      ?? 16.76;
@@ -2100,8 +2178,6 @@ function renderResumen() {
   const dIRPF      = bruto * pctI / 100;
   const totalDed   = dComunes + dAccidente + dIRPF + pol;
   const neto       = bruto - totalDed;
-
-  // Vacances
   const vacUsades = dias.filter(d => d.tipo === 'vacances').length;
   const vacRestants = 22 - vacUsades;
   const vacPct = Math.min(100, Math.round((vacUsades / 22) * 100));
@@ -2148,8 +2224,9 @@ function renderResumen() {
       ${rr('Salario base', SUELDO_BASE)}
       ${rr('Paga prop. beneficios', PAGA_BENEFICIOS)}
       ${rr('Bolsa de vacaciones', BOLSA_VACACIONES)}
+      ${antig > 0 ? rr('🏅 Antigüedad', antig) : ''}
       <div style="border-top:1px solid var(--border);margin:8px 0 6px;"></div>
-      ${rr('<strong>Total fijos</strong>', TOTAL_FIJO)}
+      ${rr('<strong>Total fijos</strong>', TOTAL_FIJO + antig)}
     </div>
     <div class="res-section">
       <div class="res-section-title">➕ Pluses del período ${labelPer}</div>
@@ -2171,7 +2248,7 @@ function renderResumen() {
         <span style="font-size:13px;font-weight:700;color:var(--text);">💵 Total bruto</span>
         <span style="font-size:18px;font-weight:700;font-family:var(--mono);color:var(--green);">+${bruto.toFixed(2)}€</span>
       </div>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px;">Fijos ${TOTAL_FIJO.toFixed(2)}€ + Pluses ${extras.toFixed(2)}€</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;">Fijos ${(TOTAL_FIJO+antig).toFixed(2)}€ + Pluses ${extras.toFixed(2)}€</div>
     </div>
     <div class="res-section" style="border:1px solid rgba(239,68,68,0.3);border-radius:14px;padding:14px;">
       <div class="res-section-title" style="color:var(--red);">📉 Deducciones</div>
@@ -2190,6 +2267,9 @@ function renderResumen() {
     <button onclick="abrirResumenPlus()" style="width:100%;margin-top:16px;padding:15px;background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(59,130,246,0.15));border:1.5px solid rgba(139,92,246,0.45);border-radius:14px;color:var(--text);font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;letter-spacing:0.01em;">
       <span style="font-size:18px;">📊</span> Ver Resumen+ anual
     </button>
+    <button onclick="abrirInformePeriodo()" style="width:100%;margin-top:10px;padding:15px;background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(16,185,129,0.08));border:1.5px solid rgba(245,158,11,0.4);border-radius:14px;color:var(--text);font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;letter-spacing:0.01em;">
+      <span style="font-size:18px;">🧾</span> Informe del período
+    </button>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
       <button onclick="exportarDatos()" style="padding:13px 8px;background:rgba(16,185,129,0.08);border:1.5px solid rgba(16,185,129,0.35);border-radius:12px;color:var(--green);font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;">
         📤 Exportar
@@ -2203,6 +2283,226 @@ function renderResumen() {
   `;
 }
 function rr(l,v){return `<div class="res-row"><span class="rl">${l}</span><span class="rv">+${v.toFixed(2)}€</span></div>`;}
+
+
+// ===== INFORME DEL PERÍODO =====
+let informeOffset = 0;
+
+function abrirInformePeriodo() {
+  informeOffset = 0;
+  renderInforme();
+  document.getElementById('informeOverlay').classList.add('show');
+}
+
+function informeNavegar(dir) {
+  informeOffset += dir;
+  if (informeOffset > 0) informeOffset = 0;
+  renderInforme();
+  document.getElementById('informeModal').scrollTop = 0;
+}
+
+function renderInforme() {
+  const hoy       = new Date();
+  const anio      = hoy.getFullYear();
+  const dia       = hoy.getDate();
+  const mesBaseHoy = dia >= 16 ? hoy.getMonth() : hoy.getMonth() - 1;
+  const mesBase   = mesBaseHoy + informeOffset;
+  const inicioPer = new Date(anio, mesBase, 16);
+  const finPer    = new Date(anio, mesBase + 1, 15);
+  const DIAS_S    = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const MESES_L   = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  const MESES_C   = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+  const plusNombres = { horas:'Plus horas', dieta:'Dieta', limpieza:'Limpieza/Planif.', nocturno:'Nocturno', festivo:'Festivo', circuito:'Circuito', dst:'DST', equipo:'En equipo' };
+  const plusColors  = { horas:'rgba(245,158,11,0.2)', dieta:'rgba(16,185,129,0.2)', limpieza:'rgba(59,130,246,0.2)', nocturno:'rgba(139,92,246,0.2)', festivo:'rgba(239,68,68,0.2)', circuito:'rgba(245,158,11,0.15)', dst:'rgba(16,185,129,0.15)', equipo:'rgba(59,130,246,0.15)' };
+  const plusBorders = { horas:'rgba(245,158,11,0.5)', dieta:'rgba(16,185,129,0.5)', limpieza:'rgba(59,130,246,0.5)', nocturno:'rgba(139,92,246,0.5)', festivo:'rgba(239,68,68,0.5)', circuito:'rgba(245,158,11,0.4)', dst:'rgba(16,185,11,0.4)', equipo:'rgba(59,130,246,0.4)' };
+  const plusTextC   = { horas:'var(--accent)', dieta:'var(--green)', limpieza:'var(--blue)', nocturno:'var(--purple)', festivo:'var(--red)', circuito:'var(--accent)', dst:'var(--green)', equipo:'var(--blue)' };
+
+  const mC0 = MESES_C[inicioPer.getMonth()];
+  const mC1 = MESES_C[finPer.getMonth()];
+  const labelPer = `16 ${mC0} – 15 ${mC1} ${finPer.getFullYear()}`;
+
+  // Días del período
+  const enPer = dias.filter(d => {
+    const f = new Date(d.fecha + 'T00:00:00');
+    return f >= inicioPer && f <= finPer && d.tipo !== 'descanso';
+  }).sort((a,b) => a.fecha.localeCompare(b.fecha));
+
+  // Totales
+  const extras  = enPer.reduce((s,d) => s+(d.total||0), 0);
+  const horas   = enPer.reduce((s,d) => s+(d.totalH||0), 0);
+  const kmTotal = enPer.reduce((s,d) => s+(d.kmTotal||0), 0);
+  const hh = Math.floor(horas), hm = Math.round((horas%1)*60);
+
+  // Pluses desglosados
+  const plusSuma = {};
+  enPer.forEach(d => (d.pluses||[]).forEach(p => {
+    plusSuma[p.tipo] = (plusSuma[p.tipo]||0) + p.valor;
+  }));
+
+  // Jornada
+  const diesJornada    = getDiesJornada(inicioPer, finPer);
+  const diesTreballats = enPer.length;
+  const pctJornada     = diesJornada ? Math.min(100, Math.round(diesTreballats/diesJornada*100)) : null;
+  const jornadaColor   = pctJornada >= 100 ? 'var(--green)' : pctJornada >= 70 ? 'var(--accent)' : 'var(--blue)';
+
+  // Económico
+  const antig = config.antiguedad ?? 0;
+  const bruto = TOTAL_FIJO + antig + extras;
+  const pctC  = config.pctComunes   ?? 4.83;
+  const pctA  = config.pctAccidente ?? 1.65;
+  const pctI  = config.pctIRPF      ?? 16.76;
+  const pol   = config.poliza       ?? 0.69;
+  const dComunes   = bruto * pctC / 100;
+  const dAccidente = bruto * pctA / 100;
+  const dIRPF      = bruto * pctI / 100;
+  const totalDed   = dComunes + dAccidente + dIRPF + pol;
+  const neto       = bruto - totalDed;
+
+  // ── KPIs fila superior
+  const kpisHtml = `
+    <div class="inf-grid3">
+      <div class="inf-kpi">
+        <div class="inf-kpi-lbl">Días trab.</div>
+        <div class="inf-kpi-val" style="color:var(--accent);">${diesTreballats}</div>
+      </div>
+      <div class="inf-kpi">
+        <div class="inf-kpi-lbl">Horas</div>
+        <div class="inf-kpi-val" style="color:var(--blue);font-size:13px;">${hh}h ${hm}m</div>
+      </div>
+      <div class="inf-kpi">
+        <div class="inf-kpi-lbl">Km totales</div>
+        <div class="inf-kpi-val" style="color:var(--purple);font-size:${kmTotal>9999?'12':'16'}px;">${kmTotal>0?kmTotal.toLocaleString('es-ES')+' km':'—'}</div>
+      </div>
+    </div>`;
+
+  // ── Barra jornada
+  const jornadaHtml = pctJornada !== null ? `
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:11px 13px;margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
+        <div style="font-size:11px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;">📅 Jornada del período</div>
+        <div style="font-size:12px;font-family:var(--mono);font-weight:700;color:${jornadaColor};">${diesTreballats}/${diesJornada} días · ${pctJornada}%</div>
+      </div>
+      <div style="background:var(--surface3);border-radius:99px;height:8px;overflow:hidden;">
+        <div style="width:${pctJornada}%;height:100%;background:${jornadaColor};border-radius:99px;"></div>
+      </div>
+      ${pctJornada>=100 ? '<div style="font-size:10px;color:var(--green);margin-top:5px;text-align:center;font-weight:700;">✅ Jornada completada</div>' : `<div style="font-size:10px;color:var(--muted);margin-top:5px;">Faltan ${diesJornada-diesTreballats} días</div>`}
+    </div>` : '';
+
+  // ── Desglose pluses
+  const plusEntries = Object.entries(plusSuma).sort((a,b)=>b[1]-a[1]);
+  const plusDesgHtml = plusEntries.length === 0
+    ? `<div style="color:var(--muted);font-size:12px;padding:8px 0;">Sin pluses en este período</div>`
+    : plusEntries.map(([tipo, val]) => `
+        <div class="inf-plus-row">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="width:10px;height:10px;border-radius:3px;background:${plusColors[tipo]||'var(--surface3)'};border:1px solid ${plusBorders[tipo]||'var(--border)'};"></div>
+            <span style="font-size:12px;color:var(--text2);">${plusNombres[tipo]||tipo}</span>
+          </div>
+          <span style="font-size:13px;font-family:var(--mono);font-weight:700;color:${plusTextC[tipo]||'var(--accent)'};">+${val.toFixed(2)}€</span>
+        </div>`).join('');
+
+  // ── Resumen económico
+  const econHtml = `
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:10px;">
+      <div class="inf-plus-row"><span style="font-size:12px;color:var(--muted2);">Salario base</span><span style="font-size:12px;font-family:var(--mono);color:var(--green);">+${SUELDO_BASE.toFixed(2)}€</span></div>
+      <div class="inf-plus-row"><span style="font-size:12px;color:var(--muted2);">Paga prop. beneficios</span><span style="font-size:12px;font-family:var(--mono);color:var(--green);">+${PAGA_BENEFICIOS.toFixed(2)}€</span></div>
+      <div class="inf-plus-row"><span style="font-size:12px;color:var(--muted2);">Bolsa vacaciones</span><span style="font-size:12px;font-family:var(--mono);color:var(--green);">+${BOLSA_VACACIONES.toFixed(2)}€</span></div>
+      ${antig > 0 ? `<div class="inf-plus-row"><span style="font-size:12px;color:var(--muted2);">🏅 Antigüedad</span><span style="font-size:12px;font-family:var(--mono);color:var(--green);">+${antig.toFixed(2)}€</span></div>` : ''}
+      <div class="inf-plus-row"><span style="font-size:12px;color:var(--muted2);">Total pluses</span><span style="font-size:12px;font-family:var(--mono);color:var(--accent);">+${extras.toFixed(2)}€</span></div>
+      <div style="border-top:1.5px solid var(--border2);margin:8px 0;"></div>
+      <div class="inf-plus-row"><span style="font-size:13px;font-weight:700;color:var(--text);">Bruto estimado</span><span style="font-size:14px;font-family:var(--mono);font-weight:800;color:var(--text);">${bruto.toFixed(2)}€</span></div>
+    </div>
+    <div style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:12px 14px;margin-bottom:10px;">
+      <div class="inf-plus-row"><span style="font-size:12px;color:var(--muted2);">Cont. Comunes (${pctC}%)</span><span style="font-size:12px;font-family:var(--mono);color:var(--red);">-${dComunes.toFixed(2)}€</span></div>
+      <div class="inf-plus-row"><span style="font-size:12px;color:var(--muted2);">Accidente AT/EP (${pctA}%)</span><span style="font-size:12px;font-family:var(--mono);color:var(--red);">-${dAccidente.toFixed(2)}€</span></div>
+      <div class="inf-plus-row"><span style="font-size:12px;color:var(--muted2);">Retención IRPF (${pctI}%)</span><span style="font-size:12px;font-family:var(--mono);color:var(--red);">-${dIRPF.toFixed(2)}€</span></div>
+      <div class="inf-plus-row"><span style="font-size:12px;color:var(--muted2);">Póliza seguro</span><span style="font-size:12px;font-family:var(--mono);color:var(--red);">-${pol.toFixed(2)}€</span></div>
+    </div>
+    <div class="inf-neto-card">
+      <div style="font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:5px;">🏦 Neto estimado a cobrar</div>
+      <div style="font-size:38px;font-weight:800;font-family:var(--mono);color:var(--blue);">${neto.toFixed(2)}€</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:4px;">Período ${labelPer}</div>
+    </div>`;
+
+  // ── Lista de días
+  const diasHtml = enPer.length === 0
+    ? `<div style="text-align:center;color:var(--muted);padding:20px;font-size:13px;">No hay días registrados en este período</div>`
+    : enPer.map(d => {
+        const f   = new Date(d.fecha + 'T00:00:00');
+        const dow = DIAS_S[f.getDay()];
+        const dNum= f.getDate();
+        const mes2= MESES_C[f.getMonth()];
+        const hh2 = Math.floor(d.totalH||0);
+        const hm2 = Math.round(((d.totalH||0)%1)*60);
+        const horaIni = d.horaInici || '—';
+        const horaFi  = d.horaFi   || '—';
+
+        const metaItems = [];
+        if (d.numBus)   metaItems.push(`🚌 Bus ${d.numBus}`);
+        if (d.kmTotal>0) metaItems.push(`📍 ${d.kmTotal} km`);
+        if (d.nota && d.nota.trim()) metaItems.push(`🏭 ${d.nota.trim().substring(0,22)}`);
+
+        const plusChips = (d.pluses||[]).map(p =>
+          `<span class="inf-plus-chip" style="background:${plusColors[p.tipo]||'var(--surface3)'};border-color:${plusBorders[p.tipo]||'var(--border)'};color:${plusTextC[p.tipo]||'var(--muted2)'};">${plusNombres[p.tipo]||p.tipo} +${p.valor.toFixed(2)}€</span>`
+        ).join('');
+
+        return `<div class="inf-day">
+          <div class="inf-day-header">
+            <div class="inf-day-fecha">${dow} ${dNum} ${mes2} · ${horaIni}→${horaFi} · ${hh2}h${hm2>0?hm2+'m':''}</div>
+            <div class="inf-day-total">${(d.total||0)>0?'+':''}${(d.total||0).toFixed(2)}€</div>
+          </div>
+          ${metaItems.length>0 ? `<div class="inf-day-meta">${metaItems.map(m=>`<span class="inf-day-tag">${m}</span>`).join('')}</div>` : ''}
+          ${plusChips ? `<div class="inf-day-pluses">${plusChips}</div>` : ''}
+        </div>`;
+      }).join('');
+
+  document.getElementById('informeContent').innerHTML = `
+    <!-- CABECERA -->
+    <div class="inf-header">
+      <div class="inf-header-title">Control Jornada · Disbus 21</div>
+      <div class="inf-header-period">Período ${labelPer}</div>
+      <div class="inf-header-sub">Generado ${DIAS_S[hoy.getDay()]} ${hoy.getDate()} ${MESES_L[hoy.getMonth()]} ${anio}</div>
+    </div>
+
+    <!-- KPIs -->
+    ${kpisHtml}
+
+    <!-- BARRA JORNADA -->
+    ${jornadaHtml}
+
+    <!-- DESGLOSE PLUSES -->
+    <div class="inf-section-title">💰 Desglose de pluses</div>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin-bottom:4px;">
+      ${plusDesgHtml}
+    </div>
+
+    <!-- ECONÓMICO -->
+    <div class="inf-section-title">📊 Resumen económico</div>
+    ${econHtml}
+
+    <!-- DÍAS -->
+    <div class="inf-section-title">📋 Días del período (${enPer.length})</div>
+    ${diasHtml}
+
+    <div class="inf-capture-hint">📸 Haz una captura de pantalla para guardar este informe</div>
+  `;
+
+  // Actualizar label navegación y flechas
+  const MESES_C2 = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const lbl = `16 ${MESES_C2[inicioPer.getMonth()]} – 15 ${MESES_C2[finPer.getMonth()]} ${finPer.getFullYear()}`;
+  document.getElementById('informePeriodoLabel').textContent = lbl;
+  // Flecha derecha deshabilitada si estamos en el período actual
+  const btnNext = document.getElementById('informeBtnNext');
+  btnNext.style.opacity = informeOffset >= 0 ? '0.2' : '1';
+  btnNext.style.pointerEvents = informeOffset >= 0 ? 'none' : 'auto';
+}
+
+function cerrarInforme(e) {
+  if (!e || e.target === document.getElementById('informeOverlay')) {
+    document.getElementById('informeOverlay').classList.remove('show');
+  }
+}
 
 // ===== RESUMEN+ ANUAL =====
 function abrirResumenPlus() {
@@ -2557,8 +2857,13 @@ function guardarLS(){localStorage.setItem('disbus_v2',JSON.stringify(dias));}
 
 function updateHeader(){
   const hoy=new Date();
-  const t=dias.filter(d=>{const f=new Date(d.fecha);return f.getMonth()===hoy.getMonth()&&f.getFullYear()===hoy.getFullYear()&&d.tipo!=='descanso';}).reduce((s,d)=>s+(d.total||0),0);
-  document.getElementById('headerTotal').textContent=`+${(TOTAL_FIJO+t).toFixed(2)} €`;
+  const anio=hoy.getFullYear(), dia=hoy.getDate();
+  const mesBase = dia >= 16 ? hoy.getMonth() : hoy.getMonth() - 1;
+  const inicioPer=new Date(anio,mesBase,16);
+  const finPer=new Date(anio,mesBase+1,15);
+  const t=dias.filter(d=>{const f=new Date(d.fecha+'T00:00:00');return f>=inicioPer&&f<=finPer&&d.tipo!=='descanso';}).reduce((s,d)=>s+(d.total||0),0);
+  const antig = config.antiguedad ?? 0;
+  document.getElementById('headerTotal').textContent=`+${(TOTAL_FIJO+antig+t).toFixed(2)} €`;
 }
 
 let toastT;
