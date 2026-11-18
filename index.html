@@ -1233,6 +1233,17 @@ function cfg_get_num(key, def) {
 let dias = JSON.parse(localStorage.getItem('disbus_v2') || '[]');
 let _editando = false;
 let config = JSON.parse(localStorage.getItem('disbus_cfg') || '{"seq":0,"mostrarLibres":true,"pctComunes":4.83,"pctAccidente":1.65,"pctIRPF":16.76,"poliza":0.69,"sueldoBase":1693.35,"pagaBeneficios":139.06,"bolsaVacaciones":29.51,"dietaComida":15.81,"dietaFuera":29.41,"antiguedad":0}');
+// Migración automática: actualiza valores viejos del convenio anterior
+(function migrarConfig() {
+  let changed = false;
+  if (!config.sueldoBase || config.sueldoBase === 1636.09)   { config.sueldoBase = 1693.35; changed = true; }
+  if (!config.bolsaVacaciones || config.bolsaVacaciones === 28.51) { config.bolsaVacaciones = 29.51; changed = true; }
+  if (!config.dietaComida || config.dietaComida === 15.28)   { config.dietaComida = 15.81; changed = true; }
+  if (!config.dietaFuera || config.dietaFuera === 28.55)     { config.dietaFuera = 29.41; changed = true; }
+  if (config.pagaBeneficios === undefined)                   { config.pagaBeneficios = 139.06; changed = true; }
+  if (config.antiguedad === undefined)                       { config.antiguedad = 0; changed = true; }
+  if (changed) localStorage.setItem('disbus_cfg', JSON.stringify(config));
+})();
 let calMes = new Date().getMonth();
 let calYear = new Date().getFullYear();
 let calPeriodo = 'mes';
